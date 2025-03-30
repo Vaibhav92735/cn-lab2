@@ -1,3 +1,4 @@
+// B22CS058-B22CS088
 
 simple Server
 {
@@ -29,6 +30,7 @@ network Net
     parameters:
         int numServers;
         int numClients;
+        string topoFile;
         @display("bgb=700,400");
     submodules:
         s[numServers]: Server {

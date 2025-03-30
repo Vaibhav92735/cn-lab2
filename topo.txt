@@ -1,45 +1,6 @@
-cat > topo.txt << 'EOF'
-# Topology file for P2P network
-# Format: node1 node2
-# This creates a fully connected network between all nodes
-
-# Connect all servers to all clients
-# Assuming servers are 0 to n-1 and clients are n to n+m-1
-# where n is the number of servers and m is the number of clients
-
-# For a network with 5 servers (0-4) and 4 clients (5-8)
-0 5
-0 6
-0 7
-0 8
-1 5
-1 6
-1 7
-1 8
-2 5
-2 6
-2 7
-2 8
-3 5
-3 6
-3 7
-3 8
-4 5
-4 6
-4 7
-4 8
-
-# Connect clients to each other for gossip
-5 6
-5 7
-5 8
-6 5
-6 7
-6 8
-7 5
-7 6
-7 8
-8 5
-8 6
-8 7
-EOF
+# Topology file for OMNeT++ simulation
+numServers=4
+numClients=3
+serverToClientDelay=10ms
+clientToServerDelay=1000ms
+clientToClientDelay=10ms

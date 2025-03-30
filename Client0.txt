@@ -1,10 +1,10 @@
 === Log for Client 0 ===
 Start time: 0
 ==============================
-[2025-03-30 20:51:52.773] Client 0 starting task 1: Find maximum in array
-[2025-03-30 20:51:52.773] Client 0 created subtask 0: 45 87 56 99 67 
-[2025-03-30 20:51:52.773] Client 0 dispatching subtask 0 to server 0
-[2025-03-30 20:51:52.773] Client 0 dispatching subtask 0 to server 1
-[2025-03-30 20:51:52.774] Client 0 created subtask 1: 22 34 12 23 78 
-[2025-03-30 20:51:52.774] Client 0 dispatching subtask 1 to server 0
-[2025-03-30 20:51:52.774] Client 0 dispatching subtask 1 to server 1
+[2025-03-30 23:09:50.972] Client 0 starting task 1: Find maximum in array
+[2025-03-30 23:09:50.973] Client 0 created subtask 0: 45 87 56 99 67 
+[2025-03-30 23:09:50.973] Client 0 dispatching subtask 0 to server 0
+[2025-03-30 23:09:50.973] Client 0 dispatching subtask 0 to server 1
+[2025-03-30 23:09:50.973] Client 0 created subtask 1: 22 34 12 23 78 
+[2025-03-30 23:09:50.973] Client 0 dispatching subtask 1 to server 0
+[2025-03-30 23:09:50.974] Client 0 dispatching subtask 1 to server 1

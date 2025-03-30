@@ -1,16 +1,7 @@
+// B22CS058-B22CS088
+
 #include "Server.h"
-#include <chrono>
-#include <climits>
-#include <cstdlib>
-#include <fstream>
-#include <iostream>
-#include <random>
-#include <sstream>
-#include <string>
-#include <vector>
-#include <algorithm>
-#include <ctime>
-#include <iomanip>
+#include <bits/stdc++.h>
 #include <omnetpp.h>
 
 using namespace std;
