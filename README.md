@@ -1,5 +1,9 @@
 # Remote Task Execution Simulation using OMNeT++
 
+## Team
+
+- **Your Name:** [Your Name] (Roll No: [Your Roll Number])
+- **Partner's Name:** [Partner's Name] (Roll No: [Partner's Roll Number])
 ## Overview
 
 This simulation uses the OMNeT++ Discrete Event Simulator to mimic remote program execution. Each job (task) is divided into *n* subtasks that are dispatched to *(n/2 + 1)* servers. The result determined by the majority is then accepted as the correct outcome.
