@@ -1,0 +1,13 @@
+=== Log for Client 3 ===
+Start time: 0
+==============================
+Client 3 initiating task 1: Find maximum in array
+Client 3 created subtask 0: 45 22 87 34 
+Client 3 dispatching subtask 0 to server 2
+Client 3 dispatching subtask 0 to server 1
+Client 3 created subtask 1: 56 12 99 
+Client 3 dispatching subtask 1 to server 1
+Client 3 dispatching subtask 1 to server 2
+Client 3 created subtask 2: 23 67 78 
+Client 3 dispatching subtask 2 to server 1
+Client 3 dispatching subtask 2 to server 2

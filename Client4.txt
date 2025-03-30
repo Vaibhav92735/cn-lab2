@@ -1,0 +1,24 @@
+=== Client 4 Output Log ===
+Simulation started at: 0
+==============================
+Client 4 starting task 1: Find maximum element in array
+Client 4 created subtask 0: 45 22 
+Client 4 sending subtask 0 to server 3
+Client 4 sending subtask 0 to server 0
+Client 4 sending subtask 0 to server 2
+Client 4 created subtask 1: 87 34 
+Client 4 sending subtask 1 to server 4
+Client 4 sending subtask 1 to server 0
+Client 4 sending subtask 1 to server 2
+Client 4 created subtask 2: 56 12 
+Client 4 sending subtask 2 to server 0
+Client 4 sending subtask 2 to server 1
+Client 4 sending subtask 2 to server 2
+Client 4 created subtask 3: 99 23 
+Client 4 sending subtask 3 to server 3
+Client 4 sending subtask 3 to server 0
+Client 4 sending subtask 3 to server 1
+Client 4 created subtask 4: 67 78 
+Client 4 sending subtask 4 to server 3
+Client 4 sending subtask 4 to server 1
+Client 4 sending subtask 4 to server 4

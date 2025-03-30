@@ -1,0 +1,241 @@
+#include <string.h>
+#include <omnetpp.h>
+#include <vector>
+#include <cstdlib>
+#include <algorithm>
+#include <iostream>
+
+using namespace std;
+using namespace omnetpp;
+
+class Server_Client_Message:public cMessage
+{
+     public:
+         int ans;
+         int subtask_id;
+         int subtask_num;
+         int task_num;
+};
+
+class ClientMessage:public cMessage
+{
+     public:
+         vector<int> arr;
+         int arr_len;
+         int subtask_id;
+         int subtask_num;
+         int task_num;
+};
+
+
+class Client : public cSimpleModule
+{
+    public:
+        int num_subtasks = 0;
+        int task_num = 0;
+        int num_server ;
+        int num_client ;
+        int s_lock = 0;
+        int c_lock = 0;
+        vector<vector<int>> task_result;
+        vector<vector<int>> rating;
+        vector<int> scores;
+        vector<vector<int>> arr_1;  // 2D vector of size num_server x 5
+        vector<vector<int>> arr_2;  // 2D vector of size num_server x 5
+
+        int N = 100;
+        void send_message(std::vector<int> arr, int arr_len, int server_id, int subtask_id, int subtask_num)
+        {
+            ClientMessage *newm= new ClientMessage();
+            newm->arr=arr;
+            newm->arr_len=arr_len;
+            newm->subtask_id=subtask_id;
+            newm->subtask_num=subtask_num;
+            send(newm, "out", server_id);
+        }
+
+  protected:
+    // The following redefined virtual function holds the algorithm.
+    virtual void initialize() override;
+    virtual void handleMessage(cMessage *msg) override;
+};
+
+// The module class needs to be registered with OMNeT++
+Define_Module(Client);
+
+vector<int> random_server_list(int num_server) {
+    vector<int> server_list;
+
+    // Generate random servers until we have (num_server/2)+1 unique servers
+    while (server_list.size() < (num_server / 2) + 1) {
+        int server = std::rand() % num_server;
+        // Check if server is not already in the list
+        if (find(server_list.begin(), server_list.end(), server) == server_list.end()) {
+            server_list.push_back(server);
+        }
+    }
+    return server_list;
+}
+
+vector<vector<int>> gen_task(int num_server){
+    vector<vector<int>> result;
+    for (int i = 0; i < num_server; i++){
+        result.push_back(std::vector<int>());
+        for (int j = 0; j < 5; j++)
+            result[i].push_back(std::rand()%100);
+    }
+    return result;
+}
+
+
+void Client::initialize(){
+
+    num_server = par("totalServers");
+    num_client = par("totalClients");
+
+    task_result.resize(num_server, vector<int>(num_server, -1));
+//    rating.resize(num_client, vector<int>(num_server, -1));
+    scores.resize(num_server, 0);
+
+    arr_1 = gen_task(num_server);
+    arr_2 = gen_task(num_server);
+
+    for(int i = 0; i < num_server; i++){
+        vector<int> server_list = random_server_list(num_server);
+        for(int j = 0 ;j<(num_server/2)+1; j++){
+            int subtask_num = i;
+            int random_subtask_id = std::rand() % N;
+
+            send_message(arr_1[i], 5, server_list[j], random_subtask_id, subtask_num);
+
+            EV<<"sent array to server "<<server_list[j]<<"for subtask "<<subtask_num<<"\n";
+        }
+    }
+
+
+
+}
+
+void calculate_score(vector<vector<int>> &task_result, vector<int> &scores,int num_server){
+    for(int i = 0; i < task_result.size(); i++){
+        map<int,int> freq;
+        int max_freq = -1;
+        int max_freq_elem = -1;
+
+        for(int j = 0; j < task_result[i].size(); j++){
+            if(task_result[i][j] != -1){
+                freq[task_result[i][j]]++;
+            }
+        }
+
+        for(auto it = freq.begin(); it != freq.end(); it++){
+            if(it->second >= max_freq){
+                max_freq_elem = it->first;
+                max_freq = it->second;
+            }
+        }
+        for(int j = 0; j < task_result[i].size(); j++){
+            if(task_result[i][j] == max_freq_elem && task_result[i][j] != -1){
+                scores[j]++;
+            }
+        }
+    }
+
+}
+
+void print_result(std::vector<std::vector<int>> &task_result){
+    for(int i = 0; i < task_result.size(); i++){
+        for(int j = 0; j < task_result[i].size(); j++){
+            EV<<"subtask "<<i<<" server "<<j<<" has result "<<task_result[i][j]<<"\n";
+        }
+    }
+}
+
+void Client::handleMessage(cMessage *msg){
+//    EV<<"issue here in handle message of client";
+//
+//
+//    int server_id = msg->getArrivalGate()->getIndex();
+//    int subtask_num = m->subtask_num;
+//    int subtask_id = m->subtask_id;
+//
+//    EV<<"received message from server "<<server_id<<"for subtask "<<subtask_num<<" and result is "<<m->ans<<"\n";
+//
+//    task_result[subtask_num][server_id] = m->ans;
+//    num_subtasks++;
+//    if(num_subtasks == num_server*((num_server/2)+1)){
+//        print_result(task_result);
+//        calculate_score(task_result, scores, num_server);
+//        for(int i = 0; i < num_server; i++){
+//            EV<<"score of server "<<i<<" is "<<scores[i]<<"\n";
+//        }
+//    }
+
+
+       // Cast the message to ClientMessage type
+       ClientMessage *clientMsg = dynamic_cast<ClientMessage *>(msg);
+       Server_Client_Message *ServerMsg =dynamic_cast<Server_Client_Message *>(msg);
+
+       int node_id = msg->getArrivalGate()->getIndex();
+       if (ServerMsg && node_id < num_server){
+           int server_id = msg->getArrivalGate()->getIndex();
+           int subtask_num = ServerMsg->subtask_num;
+           EV << "Received Server Message from server"<<server_id<<":\n";
+           EV << ServerMsg ->ans<<":\n";
+           task_result[subtask_num][server_id] = ServerMsg->ans;
+           s_lock  += 1;
+       }
+       else {
+           if(!clientMsg)EV << "Received a message of unexpected type\n";
+       }
+       if(s_lock == num_server * (num_server/2 + 1)){
+           s_lock ++;
+           calculate_score(task_result, scores, num_server);
+           for(int i = 0; i < num_server; i++){
+               EV<<"score of server "<<i<<" is "<<scores[i]<<"\n";
+           }
+//           rating.push_back(scores);
+           for(int i = 0;i<num_client;i++){
+               int subtask_num = i;
+               int random_subtask_id = std::rand() % N;
+               send_message({scores}, num_server, i+num_server, random_subtask_id, subtask_num);
+           }
+       }
+       if (clientMsg && node_id >= num_server){
+          int client_id = msg->getArrivalGate()->getIndex();
+          rating.push_back(clientMsg->arr);
+          c_lock++;
+//          for(int i=0;i<num_client;i++){
+//              for(int j=0;j<num_server;j++){
+//                  EV<<rating[i][j]<<" ";
+//              }
+//              EV<<"\n";
+//          }
+
+          EV << "Received client Message from client"<<client_id<<":\n";
+
+
+      }
+      else {
+          if(!ServerMsg)EV << "Received a message of unexpected type\n";
+      }
+
+      if(c_lock == num_client){
+          for(int i=0;i<num_client;i++){
+              for(int j=0;j<num_server;j++){
+                  EV<<rating[i][j]<<" ";
+              }
+              EV<<"\n";
+          }
+          for(int j=0;j<num_server;j++){
+              int s = 0;
+              for(int i=0;i<num_client;i++) s+= rating[i][j];
+              scores[j] = s;
+          }
+          for(int i=0;i<num_server;i++){
+              EV<<scores[i]<<" ";
+          }
+          c_lock=0;
+      }
+
+}

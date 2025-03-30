@@ -1,0 +1,5 @@
+=== Server Output Log ===
+Simulation started at: 0
+===========================
+[2025-03-30 20:51:52.771] Server 0 has been initialized.
+[2025-03-30 20:51:52.771] Server 1 has been initialized.

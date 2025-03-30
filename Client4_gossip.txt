@@ -1,0 +1,3 @@
+=== Client 4 Gossip Log ===
+Simulation started at: 0
+==============================

@@ -1,0 +1,3 @@
+=== Gossip Log for Client 3 ===
+Start time: 0
+==============================
